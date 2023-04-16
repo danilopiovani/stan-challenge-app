@@ -1,3 +1,4 @@
+
 # Stan - Code Challenge
 
 React/Typescript single-page application following guidelines and requirements.
@@ -35,6 +36,15 @@ Start the server
 
 ```bash
   npm run start
+```
+
+
+## Running Tests
+
+To run tests, run the following command
+
+```bash
+  npm run test
 ```
 
 
