@@ -1,6 +1,3 @@
-# stan-challenge-app2
-
-
 # Stan - Code Challenge
 
 React/Typescript single-page application following guidelines and requirements.
