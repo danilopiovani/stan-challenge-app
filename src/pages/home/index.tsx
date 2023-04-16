@@ -23,6 +23,7 @@ const Home: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    console.log('type', type);
     setSelectedType(type || '');
   }, [type]);
 

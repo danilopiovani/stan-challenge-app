@@ -8,13 +8,13 @@ import { useNavigate } from 'react-router-dom';
 
 const Program: React.FC = () => {
   const navigate = useNavigate();
-  const { data, setData, selectedType } = useContext(MainContext);
+  const { data, setData, selectedType, currentIndexSelected } =
+    useContext(MainContext);
   const { id } = useParams<{ id: string }>();
   useEffect(() => {
-    console.log('fetching data', data);
+    console.log('currentIndexSelected', currentIndexSelected);
     // fetch data if landing on this page directly
     if (data?.length === 0) {
-      console.log('fetching data');
       fetch('http://localhost:3001/data')
         .then((response) => response.json())
         .then((data) => {
@@ -27,13 +27,6 @@ const Program: React.FC = () => {
       }
     };
     window.addEventListener('keydown', handleBackspacePress);
-    if (!data) {
-      fetch('http://localhost:3001/data')
-        .then((response) => response.json())
-        .then((data) => {
-          setData(data);
-        });
-    }
     return () => {
       window.removeEventListener('keydown', handleBackspacePress);
     };

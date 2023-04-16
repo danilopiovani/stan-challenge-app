@@ -56,7 +56,10 @@ const Carousel: React.FC<MyComponentProps> = ({ dataSet }) => {
       let localDataEnd = dataSet.slice(0, 6 - localDataStart.length);
 
       // concat the two arrays
-      let localData = localDataStart.concat(localDataEnd);
+      let localData =
+        dataSet?.length >= 6
+          ? localDataStart.concat(localDataEnd)
+          : localDataStart;
 
       setDataToShow(localData);
     }
