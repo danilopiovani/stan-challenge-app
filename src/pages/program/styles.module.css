@@ -31,6 +31,16 @@
   font-size: 3rem;
 }
 
+.skeletonProgram img {
+  width: 70vw;
+  max-width: 720px;
+}
+
+.notFoundText {
+  font-size: 3rem;
+  color: #888888;
+}
+
 @media (min-width: 1920) {
   .content img {
     width: unset;

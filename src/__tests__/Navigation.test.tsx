@@ -5,10 +5,7 @@ import { MainContext, MainContextState } from '../context/MainContext';
 import Navigation from '../components/Navigation';
 
 test('renders Navigation component with Home, TV Shows and Movies links', () => {
-  const darkMode = false;
   const contextValue: MainContextState = {
-    darkMode,
-    setDarkMode: jest.fn(),
     data: [],
     setData: () => {},
     selectedType: '',

@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { MainContext } from './../../context/MainContext';
 import styles from './styles.module.css';
+import Skeleton from './skeleton.svg';
 
 interface MyComponentProps {
   dataSet: any[];
@@ -18,6 +19,7 @@ const Carousel: React.FC<MyComponentProps> = ({ dataSet }) => {
     startingAt,
     setStartingAt,
   } = useContext(MainContext);
+  const [loading, setLoading] = useState(true);
   const [dataToShow, setDataToShow] = useState<DataType>(null);
   const [windowSize, setWindowSize] = useState({
     width: window.innerWidth,
@@ -64,6 +66,18 @@ const Carousel: React.FC<MyComponentProps> = ({ dataSet }) => {
       setDataToShow(localData);
     }
   }, [startingAt, currentIndexSelected, dataSet]);
+
+  useEffect(() => {
+    if (dataToShow) {
+      if (dataToShow?.length > 0) {
+        // timeout to simulate a delay in the loading
+        // included only to be able to see the skeleton
+        setTimeout(() => {
+          setLoading(false);
+        }, 500);
+      }
+    }
+  }, [dataToShow]);
 
   const handleArrowPress = (e: KeyboardEvent) => {
     // switch case for the key pressed
@@ -125,34 +139,37 @@ const Carousel: React.FC<MyComponentProps> = ({ dataSet }) => {
       (newIndexToBeSet = currentIndexSelected + 1);
     setCurrentIndexSelected(newIndexToBeSet);
   };
-
   return (
     <section data-testid="carousel" className={`${styles.carouselWrapper}`}>
-      {dataToShow ? (
-        dataToShow?.map((item: any, index: any) => (
-          <Link key={item.id} to={`/program/${item?.id}`}>
-            <div
-              key={`div_${item.id}`}
-              className={`${styles.imgWrapper} ${
-                currentIndexSelected === index ? styles.active : ''
-              }`}
-              onClick={() => {
-                setCurrentIndexSelected(index);
-              }}
-              onMouseEnter={() => {
-                setCurrentIndexSelected(index);
-              }}
-              onMouseLeave={() => {
-                setCurrentIndexSelected(-1);
-              }}
-            >
-              <img key={`img_${item.id}`} src={item.image} alt={item.title} />
-            </div>
-          </Link>
-        ))
-      ) : (
-        <p>Loading...</p>
-      )}
+      {!loading
+        ? dataToShow?.map((item: any, index: any) => (
+            <Link key={item.id} to={`/program/${item?.id}`}>
+              <div
+                key={`div_${item.id}`}
+                className={`${styles.imgWrapper} ${
+                  currentIndexSelected === index ? styles.active : ''
+                }`}
+                onClick={() => {
+                  setCurrentIndexSelected(index);
+                }}
+                // onMouseEnter={() => {
+                //   setCurrentIndexSelected(index);
+                // }}
+                // onMouseLeave={() => {
+                //   setCurrentIndexSelected(-1);
+                // }}
+              >
+                <img key={`img_${item.id}`} src={item.image} alt={item.title} />
+              </div>
+            </Link>
+          ))
+        : Array(6)
+            .fill('id_')
+            .map((_, i) => (
+              <div key={`div_${i}`} className={`${styles.imgWrapper}`}>
+                <img key={`img_${i}`} src={Skeleton} alt={'skeleton'} />
+              </div>
+            ))}
     </section>
   );
 };

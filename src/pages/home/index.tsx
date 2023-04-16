@@ -23,19 +23,18 @@ const Home: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    console.log('type', type);
     setSelectedType(type || '');
   }, [type]);
 
   useEffect(() => {
     if (data?.length > 0) {
-      let localData = [...data];
+      let localData: any[] = [...data];
       // filter by the type
       selectedType &&
         (localData = localData.filter(
           (item: any) => item.type === selectedType
         ));
-      setDataFiltered(localData);
+      setDataFiltered(localData as any);
     }
   }, [data, selectedType]);
 

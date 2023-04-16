@@ -1,8 +1,6 @@
 import React, { createContext, useState } from 'react';
 
 interface MainContextState {
-  darkMode: boolean;
-  setDarkMode: (darkMode: boolean) => void;
   data: any;
   setData: (data: any[]) => void;
   selectedType: string;
@@ -14,8 +12,6 @@ interface MainContextState {
 }
 
 const MainContext = createContext<MainContextState>({
-  darkMode: false,
-  setDarkMode: () => {},
   data: [],
   setData: () => {},
   selectedType: '',
@@ -32,7 +28,6 @@ interface MyComponentProps {
 }
 
 const MainContextProvider: React.FC<MyComponentProps> = ({ children }) => {
-  const [darkMode, setDarkMode] = useState(false);
   const [data, setData] = useState<any[]>([]);
   const [selectedType, setSelectedType] = useState<string>('');
   const [currentIndexSelected, setCurrentIndexSelected] = useState<number>(-1);
@@ -41,8 +36,6 @@ const MainContextProvider: React.FC<MyComponentProps> = ({ children }) => {
   return (
     <MainContext.Provider
       value={{
-        darkMode,
-        setDarkMode,
         data,
         setData,
         selectedType,

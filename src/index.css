@@ -8,7 +8,10 @@ body {
   height: 100vh;
   overflow-x: hidden;
   padding-left: 3rem;
-  /* max-width: 1920px; */
+}
+
+iframe {
+  display: none;
 }
 
 @media (min-width: 1080px) {

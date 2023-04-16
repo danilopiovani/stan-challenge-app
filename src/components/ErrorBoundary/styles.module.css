@@ -1,0 +1,10 @@
+.errorMsg {
+  font-size: 3rem;
+  color: #888888;
+}
+
+@media (min-width: 375px) and (max-width: 1080px) {
+  .errorMsg {
+    font-size: 2rem;
+  }
+}

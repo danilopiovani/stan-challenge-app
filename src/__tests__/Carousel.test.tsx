@@ -85,10 +85,7 @@ describe('Carousel', () => {
       language: 'English',
     },
   ];
-  const darkMode = false;
   const contextValue: MainContextState = {
-    darkMode,
-    setDarkMode: jest.fn(),
     data: [],
     setData: () => {},
     selectedType: '',
