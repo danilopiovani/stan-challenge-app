@@ -72,9 +72,10 @@ const Carousel: React.FC<MyComponentProps> = ({ dataSet }) => {
       if (dataToShow?.length > 0) {
         // timeout to simulate a delay in the loading
         // included only to be able to see the skeleton
-        setTimeout(() => {
-          setLoading(false);
-        }, 500);
+        // setTimeout(() => {
+        //   setLoading(false);
+        // }, 500);
+        setLoading(false);
       }
     }
   }, [dataToShow]);
@@ -141,35 +142,42 @@ const Carousel: React.FC<MyComponentProps> = ({ dataSet }) => {
   };
   return (
     <section data-testid="carousel" className={`${styles.carouselWrapper}`}>
-      {!loading
-        ? dataToShow?.map((item: any, index: any) => (
-            <Link key={item.id} to={`/program/${item?.id}`}>
-              <div
-                key={`div_${item.id}`}
-                className={`${styles.imgWrapper} ${
-                  currentIndexSelected === index ? styles.active : ''
-                }`}
-                onClick={() => {
-                  setCurrentIndexSelected(index);
-                }}
-                // onMouseEnter={() => {
-                //   setCurrentIndexSelected(index);
-                // }}
-                // onMouseLeave={() => {
-                //   setCurrentIndexSelected(-1);
-                // }}
-              >
-                <img key={`img_${item.id}`} src={item.image} alt={item.title} />
-              </div>
-            </Link>
-          ))
-        : Array(6)
+      {!loading ? (
+        dataToShow?.map((item: any, index: any) => (
+          <Link key={item.id} to={`/program/${item?.id}`}>
+            <div
+              key={`div_${item.id}`}
+              data-testid={`divImg_${item.id}_${
+                currentIndexSelected === index ? 'active' : 'inactive'
+              }`}
+              className={`${styles.imgWrapper} ${
+                currentIndexSelected === index ? styles.active : ''
+              }`}
+              onClick={() => {
+                setCurrentIndexSelected(index);
+              }}
+              // onMouseEnter={() => {
+              //   setCurrentIndexSelected(index);
+              // }}
+              // onMouseLeave={() => {
+              //   setCurrentIndexSelected(-1);
+              // }}
+            >
+              <img key={`img_${item.id}`} src={item.image} alt={item.title} />
+            </div>
+          </Link>
+        ))
+      ) : (
+        <div data-testid="skeleton">
+          {Array(6)
             .fill('id_')
             .map((_, i) => (
               <div key={`div_${i}`} className={`${styles.imgWrapper}`}>
                 <img key={`img_${i}`} src={Skeleton} alt={'skeleton'} />
               </div>
             ))}
+        </div>
+      )}
     </section>
   );
 };

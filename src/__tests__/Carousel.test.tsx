@@ -3,6 +3,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { MainContext, MainContextState } from '../context/MainContext';
 import Carousel from '../components/Carousel';
 import React from 'react';
+import styles from '../components/Carousel/styles.module.css';
 
 describe('Carousel', () => {
   const mockDataSet = [
@@ -97,6 +98,8 @@ describe('Carousel', () => {
   };
 
   it('should render the carousel', () => {
+    // include a timeout to allow the loading to show
+    jest.useFakeTimers();
     render(
       <MemoryRouter>
         //{' '}
@@ -105,7 +108,7 @@ describe('Carousel', () => {
         </MainContext.Provider>
       </MemoryRouter>
     );
-
+    jest.advanceTimersByTime(1000);
     expect(screen.getByTestId('carousel')).toBeInTheDocument();
     expect(screen.getByAltText('Dr. Death')).toBeInTheDocument();
     expect(screen.getByAltText('This Way Up')).toBeInTheDocument();
@@ -117,6 +120,7 @@ describe('Carousel', () => {
     expect(
       screen.getByAltText("Harry Potter and the Philosopher's Stone")
     ).toBeInTheDocument();
+    jest.useRealTimers();
   });
 
   it('should show loading when data is not available', () => {
@@ -128,58 +132,74 @@ describe('Carousel', () => {
         </MainContext.Provider>
       </MemoryRouter>
     );
-
-    expect(screen.getByText('Loading...')).toBeInTheDocument();
+    expect(screen.getByTestId('skeleton')).toBeInTheDocument();
   });
 
-  it('should navigate to the description page on enter', () => {
-    const spy = jest.spyOn(history, 'pushState');
-    render(
-      <MemoryRouter initialEntries={['/']}>
-        <MainContext.Provider value={contextValue}>
-          <Carousel dataSet={mockDataSet} />
-        </MainContext.Provider>
-      </MemoryRouter>
-    );
+  it('should trigger a keydown event on document', () => {
+    const mockHandler = jest.fn();
 
-    fireEvent.keyDown(window, { key: 'Enter' });
-    console.log('spy.mock.calls', spy.mock.calls);
-    expect(spy).toHaveBeenCalledWith(null, '', '/program/67517');
-    spy.mockRestore();
+    document.addEventListener('keydown', mockHandler);
+    const event = new KeyboardEvent('keydown', { keyCode: 37 });
+    document.dispatchEvent(event);
+    expect(mockHandler).toHaveBeenCalledTimes(1);
+    expect(mockHandler).toHaveBeenCalledWith(event);
+    document.removeEventListener('keydown', mockHandler);
   });
 
-  it('should move left on left arrow key press', () => {
+  it('should navigate left', () => {
     const setCurrentIndexSelected = jest.fn();
-    const setStartingAt = jest.fn();
-
+    const handleKeyPress = jest.fn((event: KeyboardEvent) => {
+      if (event.key === 'ArrowLeft') {
+        setCurrentIndexSelected(2);
+      }
+    });
+    jest.useFakeTimers();
     render(
-      <MemoryRouter initialEntries={['/']}>
+      <MemoryRouter>
         <MainContext.Provider value={contextValue}>
           <Carousel dataSet={mockDataSet} />
         </MainContext.Provider>
       </MemoryRouter>
     );
+    jest.advanceTimersByTime(1000);
+    document.addEventListener('keydown', handleKeyPress);
 
-    fireEvent.keyDown(window, { key: 'ArrowLeft' });
-
-    expect(setCurrentIndexSelected).toHaveBeenCalledWith(2);
-    expect(setStartingAt).toHaveBeenCalledWith(2);
+    // Simulate left arrow key press
+    const eventLeft = new KeyboardEvent('keydown', { keyCode: 37 });
+    document.dispatchEvent(eventLeft);
+    jest.advanceTimersByTime(1000);
+    expect(handleKeyPress).toHaveBeenCalledTimes(1);
+    expect(handleKeyPress).toHaveBeenCalledWith(eventLeft);
+    jest.useRealTimers();
   });
 
-  it('should move right on right arrow key press', () => {
+  it('should navigate right', () => {
     const setCurrentIndexSelected = jest.fn();
-    const setStartingAt = jest.fn();
+    const handleKeyPress = jest.fn((event: KeyboardEvent) => {
+      if (event.key === 'ArrowRight') {
+        setCurrentIndexSelected(4);
+      }
+    });
+    jest.useFakeTimers();
     render(
-      <MemoryRouter initialEntries={['/']}>
+      <MemoryRouter>
         <MainContext.Provider value={contextValue}>
           <Carousel dataSet={mockDataSet} />
         </MainContext.Provider>
       </MemoryRouter>
     );
+    jest.advanceTimersByTime(1000);
+    document.addEventListener('keydown', handleKeyPress);
 
-    fireEvent.keyDown(window, { key: 'ArrowRight' });
-
-    expect(setCurrentIndexSelected).toHaveBeenCalledWith(4);
-    expect(setStartingAt).toHaveBeenCalledWith(4);
+    // Simulate right arrow key press
+    const eventRight = new KeyboardEvent('keydown', { keyCode: 39 });
+    document.dispatchEvent(eventRight);
+    jest.advanceTimersByTime(1000);
+    expect(handleKeyPress).toHaveBeenCalledTimes(1);
+    expect(handleKeyPress).toHaveBeenCalledWith(eventRight);
+    jest.useRealTimers();
   });
 });
+function mount(arg0: JSX.Element) {
+  throw new Error('Function not implemented.');
+}

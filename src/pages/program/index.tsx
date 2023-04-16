@@ -42,18 +42,15 @@ const Program: React.FC = () => {
       )?.[0];
       setProgramToShow(program || null);
       // setTimeout to simulate loading
-      setTimeout(() => {
-        setLoading(false);
-      }, 500);
+      // setTimeout(() => {
+      //   setLoading(false);
+      // }, 500);
+      setLoading(false);
     }
   }, [data]);
 
-  useEffect(() => {
-    console.log('loading', loading);
-  }, [loading]);
-
   return (
-    <div className={styles.programWrapper}>
+    <div data-testid={`program_${id}`} className={styles.programWrapper}>
       <Navigation />
       {!loading ? (
         programToShow ? (
