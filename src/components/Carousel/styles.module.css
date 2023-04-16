@@ -1,0 +1,40 @@
+.carouselWrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  gap: 1rem;
+  padding: 0.5rem;
+}
+
+.imgWrapper {
+  padding: 0.2rem 0.2rem 0 0.2rem;
+  cursor: pointer;
+}
+
+.imgWrapper.active {
+  outline: 0.2rem solid #0099fd;
+  border-radius: 0.2rem;
+}
+
+.imgWrapper img {
+  width: 17vw;
+}
+
+@media (min-width: 1080px) {
+  .imgWrapper img {
+    width: 17vw;
+  }
+}
+
+@media (min-width: 720px) and (max-width: 1080px) {
+  .imgWrapper img {
+    width: 38vw;
+  }
+}
+
+@media (min-width: 375px) and (max-width: 720px) {
+  .imgWrapper img {
+    width: 60vw;
+  }
+}

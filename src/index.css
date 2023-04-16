@@ -1,0 +1,32 @@
+body {
+  background-color: black;
+  color: white;
+  font-family: open-sans, sans-serif;
+  padding: 0;
+  box-sizing: border-box;
+  margin: 0;
+  height: 100vh;
+  overflow-x: hidden;
+  padding-left: 3rem;
+  /* max-width: 1920px; */
+}
+
+@media (min-width: 1080px) {
+  body {
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 720px) and (max-width: 1080px) {
+  body {
+    /* font-size: 13px; */
+    padding-left: 1rem;
+  }
+}
+
+@media (min-width: 375px) and (max-width: 720px) {
+  body {
+    /* font-size: 10px; */
+    padding-left: 1rem;
+  }
+}
