@@ -21,6 +21,17 @@
   width: 17vw;
 }
 
+.notFoundText {
+  font-size: 3rem;
+  color: #888888;
+}
+
+.skeletonWrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
 @media (min-width: 1080px) {
   .imgWrapper img {
     width: 17vw;

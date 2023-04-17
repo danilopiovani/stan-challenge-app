@@ -21,6 +21,9 @@ const Carousel: React.FC<MyComponentProps> = ({ dataSet }) => {
   } = useContext(MainContext);
   const [loading, setLoading] = useState(true);
   const [dataToShow, setDataToShow] = useState<DataType>(null);
+  // state to control error message
+  const [error, setError] = useState(false);
+
   const [windowSize, setWindowSize] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
@@ -81,19 +84,23 @@ const Carousel: React.FC<MyComponentProps> = ({ dataSet }) => {
   }, [dataToShow]);
 
   const handleArrowPress = (e: KeyboardEvent) => {
-    // switch case for the key pressed
-    switch (e.key) {
-      case 'ArrowLeft':
-        handleLeftDirection();
-        break;
-      case 'ArrowRight':
-        handleRightDirection();
-        break;
-      // case enter
-      case 'Enter':
-        navigate(`/program/${dataToShow?.[currentIndexSelected]?.id}`);
-      default:
-        break;
+    try {
+      // switch case for the key pressed
+      switch (e.key) {
+        case 'ArrowLeft':
+          handleLeftDirection();
+          break;
+        case 'ArrowRight':
+          handleRightDirection();
+          break;
+        // case enter
+        case 'Enter':
+          navigate(`/program/${dataToShow?.[currentIndexSelected]?.id}`);
+        default:
+          break;
+      }
+    } catch (error) {
+      setError(true);
     }
   };
 
@@ -141,44 +148,57 @@ const Carousel: React.FC<MyComponentProps> = ({ dataSet }) => {
     setCurrentIndexSelected(newIndexToBeSet);
   };
   return (
-    <section data-testid="carousel" className={`${styles.carouselWrapper}`}>
-      {!loading ? (
-        dataToShow?.map((item: any, index: any) => (
-          <Link key={item.id} to={`/program/${item?.id}`}>
-            <div
-              key={`div_${item.id}`}
-              data-testid={`divImg_${item.id}_${
-                currentIndexSelected === index ? 'active' : 'inactive'
-              }`}
-              className={`${styles.imgWrapper} ${
-                currentIndexSelected === index ? styles.active : ''
-              }`}
-              onClick={() => {
-                setCurrentIndexSelected(index);
-              }}
-              // onMouseEnter={() => {
-              //   setCurrentIndexSelected(index);
-              // }}
-              // onMouseLeave={() => {
-              //   setCurrentIndexSelected(-1);
-              // }}
-            >
-              <img key={`img_${item.id}`} src={item.image} alt={item.title} />
-            </div>
-          </Link>
-        ))
-      ) : (
-        <div data-testid="skeleton">
-          {Array(6)
-            .fill('id_')
-            .map((_, i) => (
-              <div key={`div_${i}`} className={`${styles.imgWrapper}`}>
-                <img key={`img_${i}`} src={Skeleton} alt={'skeleton'} />
-              </div>
-            ))}
+    <>
+      {error && (
+        <div className={styles.notFoundText}>
+          An unknown error occurred. Please try again later.
         </div>
       )}
-    </section>
+      {!error && (
+        <section data-testid="carousel" className={`${styles.carouselWrapper}`}>
+          {!loading ? (
+            dataToShow?.map((item: any, index: any) => (
+              <Link key={item.id} to={`/program/${item?.id}`}>
+                <div
+                  key={`div_${item.id}`}
+                  data-testid={`divImg_${item.id}_${
+                    currentIndexSelected === index ? 'active' : 'inactive'
+                  }`}
+                  className={`${styles.imgWrapper} ${
+                    currentIndexSelected === index ? styles.active : ''
+                  }`}
+                  onClick={() => {
+                    setCurrentIndexSelected(index);
+                  }}
+                  // onMouseEnter={() => {
+                  //   setCurrentIndexSelected(index);
+                  // }}
+                  // onMouseLeave={() => {
+                  //   setCurrentIndexSelected(-1);
+                  // }}
+                >
+                  <img
+                    key={`img_${item.id}`}
+                    src={item.image}
+                    alt={item.title}
+                  />
+                </div>
+              </Link>
+            ))
+          ) : (
+            <div data-testid="skeleton" className={styles.skeletonWrapper}>
+              {Array(6)
+                .fill('id_')
+                .map((_, i) => (
+                  <div key={`div_${i}`} className={`${styles.imgWrapper}`}>
+                    <img key={`img_${i}`} src={Skeleton} alt={'skeleton'} />
+                  </div>
+                ))}
+            </div>
+          )}
+        </section>
+      )}
+    </>
   );
 };
 
