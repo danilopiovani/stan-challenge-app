@@ -11,13 +11,13 @@ React/Typescript single-page application following guidelines and requirements.
 Clone the project
 
 ```bash
-  gh repo clone danilopiovani/stan-challenge-app2
+  gh repo clone danilopiovani/stan-challenge-app
 ```
 
 Go to the project directory
 
 ```bash
-  cd stan-challenge-app2
+  cd stan-challenge-app
 ```
 
 Install dependencies
