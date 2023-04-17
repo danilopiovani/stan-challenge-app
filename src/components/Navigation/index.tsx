@@ -6,7 +6,6 @@ import styles from './styles.module.css';
 import { MainContext } from './../../context/MainContext';
 
 const Navigation: React.FC = () => {
-  const [isActive, setIsActive] = React.useState('home');
   const { selectedType, setCurrentIndexSelected, setStartingAt } =
     useContext(MainContext);
   return (
