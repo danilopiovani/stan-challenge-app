@@ -5,11 +5,17 @@ import { MainContext } from './../../context/MainContext';
 import styles from './styles.module.css';
 import Skeleton from './skeleton.svg';
 
-interface MyComponentProps {
-  dataSet: any[];
+interface Program {
+  id: number;
+  name: string;
+  image: string;
 }
 
-type DataType = any[] | null;
+interface MyComponentProps {
+  dataSet: Program[];
+}
+
+type DataType = Program[] | null;
 
 const Carousel: React.FC<MyComponentProps> = ({ dataSet }) => {
   const navigate = useNavigate();
@@ -19,12 +25,15 @@ const Carousel: React.FC<MyComponentProps> = ({ dataSet }) => {
     startingAt,
     setStartingAt,
   } = useContext(MainContext);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(true);
   const [dataToShow, setDataToShow] = useState<DataType>(null);
   // state to control error message
-  const [error, setError] = useState(false);
+  const [error, setError] = useState<boolean>(false);
 
-  const [windowSize, setWindowSize] = useState({
+  const [windowSize, setWindowSize] = useState<{
+    width: number;
+    height: number;
+  }>({
     width: window.innerWidth,
     height: window.innerHeight,
   });

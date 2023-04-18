@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import Logo from '../../../public/logo.svg';
 import styles from './styles.module.css';
 import { MainContext } from './../../context/MainContext';
 
-const Navigation: React.FC = () => {
+const Navigation: FC = () => {
   const { selectedType, setCurrentIndexSelected, setStartingAt } =
     useContext(MainContext);
+
   return (
     <nav className={styles.navWrapper}>
       <Link

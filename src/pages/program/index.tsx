@@ -8,13 +8,26 @@ import { useNavigate } from 'react-router-dom';
 import Skeleton from './skeleton.svg';
 import SkeletonProgram from './skeletonProgram.svg';
 
+type ProgramData = {
+  id: number;
+  type: string;
+  title: string;
+  year: number;
+  description: string;
+  genre: string;
+  language: string;
+  rating: string;
+  image: string;
+};
+
 const Program: React.FC = () => {
   const navigate = useNavigate();
   const { data, setData, selectedType, currentIndexSelected } =
     useContext(MainContext);
-  const [loading, setLoading] = useState(true);
-  const [programToShow, setProgramToShow] = useState<any>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [programToShow, setProgramToShow] = useState<ProgramData | null>(null);
   const { id } = useParams<{ id: string }>();
+
   useEffect(() => {
     // fetch data if landing on this page directly
     if (data?.length === 0) {
@@ -38,7 +51,7 @@ const Program: React.FC = () => {
   useEffect(() => {
     if (data?.length > 0) {
       const program = data.filter(
-        (item: any) => item.id.toString() === id
+        (item: ProgramData) => item.id.toString() === id
       )?.[0];
       setProgramToShow(program || null);
       // setTimeout to simulate loading
@@ -55,7 +68,7 @@ const Program: React.FC = () => {
       {!loading ? (
         programToShow ? (
           <div key={programToShow.id} className={styles.content}>
-            <img src={programToShow?.image} />
+            <img src={programToShow?.image} alt="Program image" />
             <div className={styles.details}>
               <div className={styles.header}>
                 <div className={styles.title}>{programToShow?.title}</div>
